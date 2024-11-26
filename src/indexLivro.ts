@@ -2,8 +2,6 @@ import express from "express";
 import routes from './routes';
 import dotenv from "dotenv";
 import connect from "./models/connection";
-import AutorModel from "./models/AutorModel";
-import EditoraModel from "./models/EditoraModel";
 import LivroModel from "./models/LivroModel";
 import { Autor, Editora, Livro } from "./models";
 
@@ -34,19 +32,8 @@ var livro = new LivroModel("Dom Casmurro", 208, "45215118000175");
 livros.push(livro);
 var livro = new LivroModel("Memórias Póstumas de Bras Cubas", 192, "45215118000175");
 livros.push(livro);
-var livro = new LivroModel("O Alienista", 104, "45215118000175");
-livros.push(livro);
-var livro = new LivroModel("O Lustre", 104, "02183757000193");
-livros.push(livro);
-var livro = new LivroModel("Um Sopro de Vida", 159, "02183757000193");
-livros.push(livro);
-var livro = new LivroModel("Antologia Poética", 368, "02183757000193");
-livros.push(livro);
-var livro = new LivroModel("A Rosa do Povo", 238, "02183757000193");
-livros.push(livro);
 
 var w = 0;
-
 livros.forEach(livro => {
     (async () => {
         var doc = await Editora.findOne({ cnpj: livro.editora }).exec(); // busca o grupo específico na coleção Grupo através do ID original

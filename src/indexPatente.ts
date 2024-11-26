@@ -2,7 +2,7 @@ import express from "express";
 import routes from './routes';
 import dotenv from "dotenv";
 import connect from "./models/connection";
-import EditoraModel from "./models/EditoraModel";
+import PatenteModel from "./models/PatenteModel";
 
 dotenv.config();
 
@@ -26,30 +26,30 @@ app.use(routes);
 
 // Incluir Editoras
 
-var editoras: Array<EditoraModel> = [];
-var editora = new EditoraModel("Editora Atlas S/A", "45215118000175");
-editoras.push(editora);
-editora = new EditoraModel("Editora Abril S/A", "02183757000193");
-editoras.push(editora);
+var patentes: Array<PatenteModel> = [];
+var patente = new PatenteModel(10, "Aspirante");
+patentes.push(patente);
+patente = new PatenteModel(15, "Paraquedista");
+patentes.push(patente);
 
 var y = 0;
 
-editoras.forEach(editora => {
+patentes.forEach(patente => {
     (async () => {
-        editora.id = await fetch('http://localhost:3001/editora', {  // cria conexão HTTP com post para salvar o objeto no BD
+        patente.id = await fetch('http://localhost:3001/patente', {  // cria conexão HTTP com post para salvar o objeto no BD
             method: 'POST', // tipo de requisição
             headers: { // cabeçalho da requisição
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ // corpo da requisição convertido para JSON
-                razao: editora.razao,
-                cnpj: editora.cnpj,
+                codigo: patente.codigo,
+                cnpj: patente.descricao,
             })
         })
             .then(response => response.json()) // resposta do backend
             .then(data => {
                 // console.log(data); // a rotina retorna o ID do objeto cadastrado
-                editoras[y].id = data._id
+                patentes[y].id = data._id
                 y++;
                 return data._id;
             })
