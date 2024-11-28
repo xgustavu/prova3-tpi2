@@ -9,7 +9,7 @@ class SoldadoController{
 
         try {
             
-            const document = new Soldado(cim, altura, militar);
+            const document = new Soldado({cim, altura, militar});
             const resp = await document.save();
             return res.json(resp);
 

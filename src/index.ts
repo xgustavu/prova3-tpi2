@@ -2,10 +2,10 @@ import express from "express";
 import routes from './routes';
 import dotenv from "dotenv";
 import connect from "./models/connection";
-import AutorModel from "./models/AutorModel";
-import EditoraModel from "./models/EditoraModel";
-import LivroModel from "./models/LivroModel";
-import { Autor, Editora, Livro, AutorLivro } from "./models";
+import MilitarModel from "./models/MilitarModel";
+import PatenteModel from "./models/PatenteModel";
+import SoldadoModel from "./models/SoldadoModel";
+import { Militar, Patente, Soldado } from "./models";
 
 dotenv.config();
 
@@ -28,18 +28,28 @@ app.listen(PORT, () => {
 app.use(routes);
 
 (async () => {
-    var docs = await AutorLivro.find().exec(); // busca os autores/livros coleção AutorLivro através do nome
-    if (docs != null) {
-        console.log("<< Livros Cadastrados >>");
-        docs.forEach(async doc => {
-            var autor = await Autor.findById(doc.autor);
-            var livro = await Livro.findById(doc.livro);
-            if (autor != null && livro != null) {
-                var editora = await Editora.findById(livro.editora);
-                if (editora != null) {
-                    console.log("Livro:", livro.titulo, "- Autor: ", autor.nome, "- Páginas:", livro.paginas, "- Editora:", editora.razao)
-                }
+    const soldados = await Soldado.find().exec(); // Busca todos os soldados cadastrados
+
+    if (soldados && soldados.length > 0) {
+        console.log("<< Soldados Cadastrados >>");
+
+        for (const soldado of soldados) {
+            const militar = await Militar.findById(soldado.militar); // Busca o Militar relacionado ao Soldado
+
+            if (militar) {
+                console.log(
+                    "Soldado:",
+                    `${militar.nome} (CIM: ${soldado.cim})`,
+                    `- Idade: ${militar.idade}`,
+                    `- Altura: ${soldado.altura}m`,
+                    `- Email: ${militar.email}`,
+                    `- Fone: ${militar.fone}`
+                );
+            } else {
+                console.log(`Soldado com CIM ${soldado.cim} não possui um militar associado.`);
             }
-        })
+        }
+    } else {
+        console.log("Nenhum soldado cadastrado.");
     }
 })();

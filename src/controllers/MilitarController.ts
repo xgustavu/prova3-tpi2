@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Militar } from "../models";
 
 class MilitarController {
+  
   public async create(req: Request, res: Response): Promise<Response> {
     const { nome, idade, email, fone } = req.body;
     try {

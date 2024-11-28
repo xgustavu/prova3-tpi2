@@ -29,7 +29,7 @@ const MilitarSchema = new Schema({
     },
     fone: {
         type: String, 
-        maxlength: [11, "O telefone deve ter no máximo 11 caracteres"]},
+        maxlength: [11, "O telefone deve ter no máximo 11 caracteres"],
         required: [true, "O telefone é obrigatório"],
         validate: {
             validator: function (value: string) {
@@ -40,8 +40,8 @@ const MilitarSchema = new Schema({
             message: (props: any) =>
                 `${props.value} não é um número de celular válido`,
         },
-}, { timestamps: true },
-);
+    },
+}, { timestamps: true, collection: "militar" });
 
 const SoldadoSchema = new Schema({
     cim: { 
@@ -51,13 +51,11 @@ const SoldadoSchema = new Schema({
     },
     altura: { 
         type: Number, 
-        validate: {
-            validator: function(altura: number){
-                return altura >= 1.62;
-            }
-        },
-        message: (props: any) => `A altura mínima é 1.62m, mas foi fornecida ${props.value}m.`,
+        required: [true, "A altura é obrigatória"],
+        min: [1.62, "A altura mínima é 1.62m, mas foi fornecida {VALUE}m."]
     },
+    
+    
     militar: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Militar",
@@ -70,7 +68,7 @@ const SoldadoSchema = new Schema({
             message: "O militar fornecido não existe"
         }
     },
-});
+}, { timestamps: true, collection: "soldado" });
 
 const PatenteSchema = new Schema({
     codigo: {
@@ -86,7 +84,7 @@ const PatenteSchema = new Schema({
         type: String,
         require: [true, "Descricao é obrigatória"],
     },
-});
+}, { timestamps: true, collection: "patente" });
 
 const Militar = mongoose.model("Militar", MilitarSchema);
 const Soldado = mongoose.model("Soldado", SoldadoSchema);
