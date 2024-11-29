@@ -7,9 +7,9 @@
     "start": "ts-node ./src",
     "dev": "ts-node-dev ./src",
     "models": "ts-node ./src/models",
-    "autores": "ts-node ./src/indexAutor.ts",
-    "editoras": "ts-node ./src/indexEditora.ts",
-    "livros": "ts-node ./src/indexLivro.ts",
+    "militar": "ts-node ./src/indexMilitar.ts",
+    "patente": "ts-node ./src/indexPatente.ts",
+    "soldado": "ts-node ./src/indexSoldado.ts",
     "autoreslivros": "ts-node ./src/indexAutoresLivros.ts"
   },
   "keywords": [],

@@ -19,12 +19,12 @@ const MilitarSchema = new Schema({
         required: [true, "O e-mail é obrigatório"],
         validate: {
             validator: function (value: string) {
-                // expressão regular para validar o formato do e-mail
-                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // Expressão regular para validar e-mails de militares das forças armadas brasileiras
+                const regex = /^[^\s@]+@(eb|marinha|fab)\.mil\.br$/i;
                 return regex.test(value);
             },
             message: (props: any) =>
-                `${props.value} não é um formato de e-mail válido`,
+                `${props.value} não é um e-mail válido. Apenas e-mails das forças armadas brasileiras (com @eb, @marinha ou @fab e sufixo .mil.br) são aceitos.`,
         },
     },
     fone: {
@@ -33,12 +33,20 @@ const MilitarSchema = new Schema({
         required: [true, "O telefone é obrigatório"],
         validate: {
             validator: function (value: string) {
-                // expressão regular para validar o formato do celular
-                const regex = /^\+?\d{1,3}?[-.\s]?(\(?\d{2,3}\)?)?[-.\s]?\d{4,5}[-.\s]?\d{4}$/;
-                return regex.test(value);
+                // Expressão regular para validar o formato do número de telefone (10 ou 11 dígitos)
+                const regex = /^[0-9]{10,11}$/;
+        
+                // Verifica o formato geral
+                if (!regex.test(value)) {
+                    return false;
+                }
+        
+                // Extrai os dois primeiros dígitos (DDD) e valida se estão entre 11 e 99
+                const ddd = parseInt(value.substring(0, 2), 10);
+                return ddd >= 11 && ddd <= 99;
             },
             message: (props: any) =>
-                `${props.value} não é um número de celular válido`,
+                `${props.value} não é um número de telefone válido. Deve conter de 10 a 11 dígitos e ter um DDD válido entre 11 e 99.`,
         },
     },
 }, { timestamps: true, collection: "militar" });

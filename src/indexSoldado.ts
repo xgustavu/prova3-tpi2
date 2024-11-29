@@ -28,9 +28,11 @@ app.use(routes);
 // Incluir soldados
 
 var soldados: Array<SoldadoModel> = [];
-var soldado = new SoldadoModel(12, 173, "13213213213");
+var soldado = new SoldadoModel(1234567891, 1.73, "Marcos da Silva");
 soldados.push(soldado);
-soldado = new SoldadoModel(9, 180, "1321334534535");
+soldado = new SoldadoModel(1212121212, 1.69, "Ana Maria Brega");
+soldados.push(soldado);
+soldado = new SoldadoModel(2121212121, 1.8, "Paulo França");
 soldados.push(soldado);
 
 var x = 0;

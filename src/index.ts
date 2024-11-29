@@ -28,28 +28,63 @@ app.listen(PORT, () => {
 app.use(routes);
 
 (async () => {
-    const soldados = await Soldado.find().exec(); // Busca todos os soldados cadastrados
+    try {
+        const soldados = await Soldado.find().exec(); // Busca todos os soldados cadastrados
 
-    if (soldados && soldados.length > 0) {
-        console.log("<< Soldados Cadastrados >>");
+        if (soldados && soldados.length > 0) {
+            for (const soldado of soldados) {
+                const militar = await Militar.findById(soldado.militar); // Busca o Militar relacionado ao Soldado
+                const alturaFormatada = soldado.altura.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
 
-        for (const soldado of soldados) {
-            const militar = await Militar.findById(soldado.militar); // Busca o Militar relacionado ao Soldado
-
-            if (militar) {
-                console.log(
-                    "Soldado:",
-                    `${militar.nome} (CIM: ${soldado.cim})`,
-                    `- Idade: ${militar.idade}`,
-                    `- Altura: ${soldado.altura}m`,
-                    `- Email: ${militar.email}`,
-                    `- Fone: ${militar.fone}`
-                );
-            } else {
-                console.log(`Soldado com CIM ${soldado.cim} não possui um militar associado.`);
+                if (militar) {
+                    console.log("<< Soldado >>");
+                    console.log(`CIM: ${soldado.cim}`);
+                    console.log(`Nome: ${militar.nome}`);
+                    console.log(`Idade: ${militar.idade}`);
+                    console.log(`Altura: ${alturaFormatada} m`);
+                    console.log(`e-Mail: ${militar.email}`);
+                    console.log(`Telefone: ${phoneMask(militar.fone)}`);
+                    console.log("");
+                } else {
+                    console.log(`Soldado com CIM ${soldado.cim} não possui um militar associado.`);
+                }
             }
+        } else {
+            console.log("Nenhum soldado cadastrado.");
         }
-    } else {
-        console.log("Nenhum soldado cadastrado.");
+    } catch (error) {
+        console.error("Erro ao listar soldados:", error);
     }
 })();
+
+
+
+
+
+
+
+
+
+function phoneMask(v: string | undefined): string {
+    if (v == undefined) {
+        return "";
+    }
+
+    let r = v.replace(/\D/g, "");
+    r = r.replace(/^0/, ""); 
+
+    if (r.length >= 11) {
+        r = r.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+    } else if (r.length > 7) {
+        r = r.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+    } else if (r.length > 2) {
+        r = r.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+    } else if (v.trim() !== "") {
+        r = r.replace(/^(\d*)/, "($1");
+    }
+
+    return r;
+}

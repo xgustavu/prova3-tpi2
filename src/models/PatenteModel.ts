@@ -3,9 +3,9 @@ class PatenteModel{
     codigo: number;
     descricao: string;
 
-    constructor(codigo: number, descricao: string){
-        this.codigo = codigo;
+    constructor(descricao: string, codigo: number){
         this.descricao = descricao;
+        this.codigo = codigo;
     };
 };
 

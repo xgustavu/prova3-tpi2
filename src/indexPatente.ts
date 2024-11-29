@@ -27,9 +27,15 @@ app.use(routes);
 // Incluir Editoras
 
 var patentes: Array<PatenteModel> = [];
-var patente = new PatenteModel(10, "Aspirante");
+var patente = new PatenteModel("Marechal do Ar", 1);
 patentes.push(patente);
-patente = new PatenteModel(15, "Paraquedista");
+patente = new PatenteModel("Brigadeiro", 2);
+patentes.push(patente);
+patente = new PatenteModel("Coronel", 3);
+patentes.push(patente);
+var patente = new PatenteModel("Major", 4);
+patentes.push(patente);
+var patente = new PatenteModel("Capitão", 5);
 patentes.push(patente);
 
 var y = 0;
@@ -42,8 +48,8 @@ patentes.forEach(patente => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ // corpo da requisição convertido para JSON
-                codigo: patente.codigo,
                 cnpj: patente.descricao,
+                codigo: patente.codigo,
             })
         })
             .then(response => response.json()) // resposta do backend
